@@ -1,0 +1,33 @@
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS && $CI_PIPELINE_SOURCE == "push"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH'
+    - when: never
+
+stages: [validate]
+
+default:
+  interruptible: true
+  timeout: 30m
+
+variables:
+  CARGO_BUILD_JOBS: "4"
+  CARGO_TERM_COLOR: never
+
+.portable-baseline:
+  stage: validate
+  script:
+    - rustc --version
+    - cargo --version
+    - cargo test --locked -p alvr_common -p alvr_packets -p alvr_session -p alvr_filesystem
+    - cargo clippy --locked -p alvr_common -p alvr_packets -p alvr_session -p alvr_filesystem --all-targets
+
+baseline-debian:
+  extends: .portable-baseline
+  tags: [debian-unprotected]
+
+baseline-macos:
+  extends: .portable-baseline
+  tags: [macos-unprotected]
