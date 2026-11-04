@@ -2197,7 +2197,7 @@ pub fn session_settings_default() -> SettingsDefault {
             velocities_multiplier: 1.0,
             open_setup_wizard: alvr_common::is_stable() || alvr_common::is_nightly(),
             new_version_popup: SwitchDefault {
-                enabled: alvr_common::is_stable(),
+                enabled: false,
                 content: NewVersionPopupConfigDefault {
                     hide_while_version: ALVR_VERSION.to_string(),
                 },

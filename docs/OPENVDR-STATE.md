@@ -61,6 +61,10 @@ Windows native build runs locally first. One expensive build at a time, four
 compiler jobs initially. Keep at least 40 GiB free on the project volume.
 Use `.local` for task state and `.worktrees` for isolated worker branches.
 
-Known setup gaps: Android SDK/NDK tooling has not been established; authenticated
-GitLab-to-GitHub mirroring and identical release asset publication are not yet
-configured. No alpha release, signing, or deployment has occurred.
+GitLab push mirror 2 uses a GitLab-managed SSH identity and GitHub deploy key
+168679106, with GitHub host keys pinned from its official API. Divergent refs
+are preserved. Mirror verification awaits the first downstream push. Release
+assets require separate publication; Git mirroring alone does not publish them.
+
+Known setup gaps: Android SDK/NDK tooling has not been established. No alpha
+release, signing, deployment, or identical release asset publication has occurred.

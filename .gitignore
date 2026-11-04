@@ -71,6 +71,7 @@ ALVR-Launcher
 # OpenVDR task-local state
 /.worktrees/
 /.local/
+__pycache__/
 
 #allows adding CMake files for some IDEs to parse C++ files correctly
 CMakeLists.txt

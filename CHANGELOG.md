@@ -11,6 +11,11 @@ All notable OpenVDR changes will be documented here, using
 - Pinned ALVR foundation and dependency inventory for development.
 - Documented desktop-streaming integration seams and hardware validation gaps.
 
+### Changed
+
+- New installations no longer check upstream releases automatically; explicit
+  update-notification preferences remain preserved.
+
 No OpenVDR alpha has been released. Upstream ALVR history and version numbers
 are retained during baseline reproduction. OpenVDR's first usable alpha will
 be `0.1.0-alpha.1`; development builds are identified by commit SHA.
