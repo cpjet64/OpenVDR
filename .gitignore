@@ -68,6 +68,10 @@ node_modules
 
 ALVR-Launcher
 
+# OpenVDR task-local state
+/.worktrees/
+/.local/
+
 #allows adding CMake files for some IDEs to parse C++ files correctly
 CMakeLists.txt
 cmake-build-debug/
