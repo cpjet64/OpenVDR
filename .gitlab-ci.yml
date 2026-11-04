@@ -21,6 +21,8 @@ variables:
   script:
     - rustc --version
     - cargo --version
+    - cargo fmt --all -- --check
+    - python3 -m unittest discover -s tools/dependencies -p 'test_*.py' -v
     - cargo test --locked -p alvr_common -p alvr_packets -p alvr_session -p alvr_filesystem
     - cargo clippy --locked -p alvr_common -p alvr_packets -p alvr_session -p alvr_filesystem --all-targets
 

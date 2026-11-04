@@ -34,7 +34,7 @@ From the repository root in PowerShell:
 ```
 
 The build uses `cargo build --locked --release` with four jobs and stores Cargo
-output under `.local/cargo-windows-baseline`. It creates the upstream Windows
+output under `target` (one serialized native build). It creates the upstream Windows
 streamer layout in `.local/windows-baseline`, including the dashboard, OpenVR
 driver, runtime DLLs, manifest, and ALVR and OpenVR licenses. The script refuses
 to overwrite an existing package; preserve or move it before building again.

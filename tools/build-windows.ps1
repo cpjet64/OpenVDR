@@ -8,7 +8,7 @@ $root = Split-Path -Parent $PSScriptRoot
 $openvr = Join-Path $root 'openvr'
 $expectedOpenvr = '4c85abcb7f7f1f02adaf3812018c99fc593bc341'
 $output = Join-Path $root '.local/windows-baseline'
-$target = Join-Path $root '.local/cargo-windows-baseline'
+$target = Join-Path $root 'target'
 
 function Require-File([string]$Path) {
     if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { throw "Missing required file: $Path" }
