@@ -13,6 +13,8 @@ default:
   timeout: 30m
 
 variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_SUBMODULE_DEPTH: "1"
   CARGO_BUILD_JOBS: "4"
   CARGO_TERM_COLOR: never
 
