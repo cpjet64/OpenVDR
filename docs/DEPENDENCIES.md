@@ -7,7 +7,7 @@ clearance, vulnerability assessment, build, or hardware qualification.
 
 `components-cargo.json` records all 712 Cargo.lock package entries, source
 identifiers and registry checksums, plus Cargo's full resolved workspace graph
-for x86_64 Windows MSVC, x86_64 Linux GNU, aarch64 macOS and aarch64 Android.
+for x86_64 Windows MSVC, x86_64 Linux GNU, aarch64 and x86_64 macOS, and aarch64 Android.
 The graphs use default workspace feature selection, including development and
 build dependencies; they are not claims that every package is shipped or that
 other feature combinations are covered. Cargo reports enabled features and
@@ -16,8 +16,10 @@ are upstream declarations, not independently audited license conclusions.
 Cargo may retain host/build dependencies when filtering a target. Workspace
 paths are normalized and local source, readme and license file paths omitted.
 `components-native.json` records source-inspected non-Cargo inputs and gaps.
-The format is an OpenVDR inventory, not CycloneDX; no SBOM completeness or
-artifact correspondence is implied.
+`components-cargo.cdx.json` is a CycloneDX 1.5 source BOM derived from the
+union of those Cargo graphs. Its dependency edges are the union across targets;
+the inventory preserves per-target graphs. It omits native inputs and is not an
+artifact SBOM. Neither document establishes artifact correspondence.
 
 To regenerate with Python 3.11+ and Cargo, from the repository root:
 
@@ -44,6 +46,8 @@ an immutable, non-GPL dependency recipe. Linux always links FFmpeg in the
 upstream build; its preparation enables GPL and version3, with nonfree CUDA
 options when NVENC is selected. These tracks require separate distribution and
 license review, including exact binary provenance, build options and notices.
+Distributable builds must not use FFmpeg `--enable-nonfree`; do not create
+release packages from outputs built with that flag.
 
 Outstanding: pin and verify native archives and their hashes and licenses,
 identify compiler, SDK, driver and system package versions actually used,

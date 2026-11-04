@@ -6,11 +6,12 @@ import json
 from pathlib import Path
 import subprocess
 import tomllib
+from cyclonedx import build_bom
 
 ROOT = Path(__file__).resolve().parents[2]
 TARGETS = (
     "x86_64-pc-windows-msvc", "x86_64-unknown-linux-gnu",
-    "aarch64-apple-darwin", "aarch64-linux-android",
+    "aarch64-apple-darwin", "x86_64-apple-darwin", "aarch64-linux-android",
 )
 
 
@@ -27,7 +28,8 @@ def target_inventory(target, offline):
     command = ["cargo", "metadata", "--locked", "--format-version", "1", "--filter-platform", target]
     if offline:
         command.append("--offline")
-    result = subprocess.run(command, cwd=ROOT, capture_output=True, encoding="utf-8", check=True)
+    flags = subprocess.CREATE_NO_WINDOW if hasattr(subprocess, "CREATE_NO_WINDOW") else 0
+    result = subprocess.run(command, cwd=ROOT, capture_output=True, encoding="utf-8", check=True, creationflags=flags)
     data = json.loads(result.stdout)
     # Paths and package IDs contain machine-specific absolute paths. Replace the
     # workspace prefix consistently, preserving the relationships in the graph.
@@ -50,12 +52,14 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--offline", action="store_true")
     parser.add_argument("--output", type=Path, default=ROOT / "docs/components-cargo.json")
+    parser.add_argument("--bom", type=Path, default=ROOT / "docs/components-cargo.cdx.json")
     args = parser.parse_args()
     inventory = {"schema": "openvdr-cargo-inventory-1", "lock": lock_inventory(), "targets": {}}
     for target in TARGETS:
         print(f"Resolving {target}", flush=True)
         inventory["targets"][target] = target_inventory(target, args.offline)
     args.output.write_text(json.dumps(inventory, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
+    args.bom.write_text(json.dumps(build_bom(inventory), indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
 if __name__ == "__main__":
