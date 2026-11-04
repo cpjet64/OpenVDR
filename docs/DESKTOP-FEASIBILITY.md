@@ -134,3 +134,36 @@ security model for discovery, trust and remote input; audio and microphone scope
 minimum macOS version; and whether virtual displays are a later requirement.
 Performance, dependency and platform conclusions require measurement, not this
 source inspection. No builds, capture, streaming or hardware tests were run.
+
+## Architect decision — 2026-11-04
+
+The linked architect session approved this sequence based on the assessment,
+while explicitly reporting that its repository/source access failed. This was
+an architecture decision, not independent source review or hardware acceptance.
+
+- First prove real single-display SDR capture/encode and local decoding; then
+  explicit desktop negotiation and a native opaque OpenXR quad. Qualify audio
+  and input separately. Do not introduce a second complete streaming stack.
+- Check protocol compatibility before deserializing changed packet layouts.
+  Reuse an adequate existing check or add the smallest OpenVDR discriminator.
+  Binary fields/enum changes are protocol changes, regardless of Serde defaults.
+- Select desktop mode and acknowledge its configuration before delivering video.
+  Unsupported mode must fail clearly; never silently fall back to PCVR or treat
+  missing desktop geometry as stereo. Advertise audio/input unavailable initially.
+- Negotiate mono presentation, coded dimensions and visible region, codec,
+  defined 8-bit SDR color/range, frame rate and current session. Physical quad
+  placement and size remain separate from image dimensions. Reject unsupported
+  capture formats instead of mislabeling HDR as SDR.
+- Reconnect for mode/codec/resolution changes initially. Flush old queues and
+  decoder state, deliver codec initialization and an initial keyframe, and reject
+  stale-session frames. Add session identity only if existing isolation is
+  insufficient.
+- Trace frame timestamps, matching, pacing and pose dependencies. Desktop frames
+  must not require fabricated PCVR tracking; the quad uses local XR tracking.
+- Validate supported/unsupported peers, retained PCVR selection, actual local
+  decoded content, stale-frame rejection and bounded buffering. Quest runtime
+  behavior remains pending hardware tests.
+
+The next protocol review must include the actual handshake sequence, changed
+packet definitions, and compatibility check relative to deserialization. No
+desktop protocol or media implementation is included in the baseline checkpoint.

@@ -15,6 +15,7 @@ unavailable locally; real video, audio, input, pairing, reconnect and latency
 acceptance remain pending. Linux/macOS desktop support is planned, not verified.
 
 - [Build the Windows baseline](docs/BUILDING.md).
+- [Build the Android developer APK](docs/ANDROID-BUILD.md).
 - [Dependency inventory and source SBOM scope](docs/DEPENDENCIES.md).
 - [Desktop integration assessment](docs/DESKTOP-FEASIBILITY.md).
 - [Current milestone, contracts and blockers](docs/OPENVDR-STATE.md).

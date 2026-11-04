@@ -30,7 +30,9 @@ Linux/macOS desktop and Windows/Linux PCVR support are not yet qualified.
 Architect chat: 6aeab6d5-d168-83e9-a2ae-d380ff0938c2. Curt authorized direct
 updates, questions and review packets after every push. Startup review confirmed
 ALVR v20.14.1, minimal source changes, scoped repeatable dependency preparation,
-and the developer-preview milestone given unavailable hardware.
+and the developer-preview milestone given unavailable hardware. The follow-up
+desktop design decision and required guards are recorded in
+`DESKTOP-FEASIBILITY.md`; independent source review is still pending.
 
 Do not distribute FFmpeg configurations with `--enable-nonfree`. They are not
 another open-source licensing choice. The initial Windows baseline excludes
@@ -63,8 +65,23 @@ Use `.local` for task state and `.worktrees` for isolated worker branches.
 
 GitLab push mirror 2 uses a GitLab-managed SSH identity and GitHub deploy key
 168679106, with GitHub host keys pinned from its official API. Divergent refs
-are preserved. Mirror verification awaits the first downstream push. Release
+are preserved. First push c9c430083d8e070a67f34356d3e13b60e14569c5 was verified
+on GitHub at 2026-11-04T06:06:13Z. Release
 assets require separate publication; Git mirroring alone does not publish them.
 
-Known setup gaps: Android SDK/NDK tooling has not been established. No alpha
-release, signing, deployment, or identical release asset publication has occurred.
+Pipeline 32224 exposed missing OpenVR headers on both runners; commit 75093f08
+enabled pinned recursive submodule checkout. Pipeline 32225 at
+75093f08a98f05e65729fd2f820c115b58719faa passed both required jobs:
+Debian 97353 and macOS 97354. This proves portable checks, not native host builds.
+
+Android tooling setup and SDK license acceptance were explicitly approved by
+Curt. The cumulative APK passed signature and package inspection; see
+`ANDROID-BASELINE-EVIDENCE.md`. It remains developer-signed and untested on a
+headset. Local artifacts are `.local/windows-baseline` and
+`.local/android-baseline/alvr_client_openxr.apk`. Android SDK, Rust toolchain,
+build-tool sources/cache and private developer key are retained under `.local`
+to avoid redownload. Do not publish the developer key or use it for releases.
+
+No alpha release, production signing, deployment, or identical release asset
+publication has occurred. Next: local single-display SDR capture/encode/decode
+proof, followed by the architect-reviewed desktop handshake and quad path.

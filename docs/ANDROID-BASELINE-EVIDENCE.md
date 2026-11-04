@@ -14,6 +14,11 @@ embedded loader matched the pinned SHA-256 in the recipe. The SDK license was
 accepted with the product owner's explicit authorization. The debug signing key
 was generated in the worktree's `.local/android-user` directory.
 
+The coordinator independently repeated signature and archive-integrity checks
+and verified the same APK hash. The retained APK is now
+`.local/android-baseline/alvr_client_openxr.apk` in the primary checkout;
+the project-local SDK/tools and private developer key were preserved there too.
+
 No installation, headset, runtime, connection, or streaming test was performed.
 Quest 1 and vendor-specific loader coverage remain unqualified. The manifest
 retains upstream device declarations, which are not device compatibility proof.
